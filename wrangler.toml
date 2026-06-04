@@ -1,0 +1,6 @@
+name = "druss-khassida"
+compatibility_date = "2026-06-04"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist/druss-khassida/browser"
