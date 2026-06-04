@@ -6,7 +6,6 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "functions": {},
   "build": {
     "env": {
       "NODE_VERSION": "20"
