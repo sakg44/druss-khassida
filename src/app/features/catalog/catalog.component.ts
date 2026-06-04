@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { CatalogService } from '../../core/services/catalog.service';
 import { ThemeService } from '../../core/services/theme.service';
@@ -8,7 +8,7 @@ import { KhassidaInfo } from '../../core/models/khassida.model';
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   template: `
     <div class="min-h-screen px-4 py-14 flex flex-col items-center">
 

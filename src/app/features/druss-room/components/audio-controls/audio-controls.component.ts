@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DrussSession, PLAYBACK_RATE_OPTIONS } from '../../../../core/models/druss-session.model';
 
 @Component({
   selector: 'app-audio-controls',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="flex flex-col gap-5">
       <div class="flex items-center justify-center gap-5">

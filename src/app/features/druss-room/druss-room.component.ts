@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subject, takeUntil, switchMap, combineLatest } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
 @Component({
   selector: 'app-druss-room',
   standalone: true,
-  imports: [CommonModule, RouterModule, SessionSetupComponent, PdfViewerComponent, AudioControlsComponent, ProgressTrackComponent],
+  imports: [RouterModule, SessionSetupComponent, PdfViewerComponent, AudioControlsComponent, ProgressTrackComponent],
   template: `
     <div class="h-screen flex flex-col overflow-hidden c-bg">
 

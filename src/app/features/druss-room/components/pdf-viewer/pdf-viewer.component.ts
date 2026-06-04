@@ -2,7 +2,7 @@ import {
   Component, Input, OnChanges, SimpleChanges, OnDestroy,
   ElementRef, ViewChild, AfterViewInit, signal, NgZone, inject, ChangeDetectionStrategy
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as pdfjsLib from 'pdfjs-dist';
 
@@ -15,7 +15,7 @@ const ZOOM_STEPS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3];
 @Component({
   selector: 'app-pdf-viewer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`:host { display: flex; flex-direction: column; height: 100%; }`],
   template: `

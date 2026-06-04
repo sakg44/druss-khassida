@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DrussSession } from '../../../../core/models/druss-session.model';
 
 @Component({
   selector: 'app-progress-track',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="flex flex-col gap-3">
       <div class="flex items-center gap-2">

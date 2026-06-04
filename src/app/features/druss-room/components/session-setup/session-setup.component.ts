@@ -1,12 +1,12 @@
 import { Component, Input, Output, EventEmitter, signal, computed, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { KhassidaInfo, KhassidaDetail } from '../../../../core/models/khassida.model';
 import { SessionConfig, REPETITION_OPTIONS, PLAYBACK_RATE_OPTIONS, PlaybackMode } from '../../../../core/models/druss-session.model';
 
 @Component({
   selector: 'app-session-setup',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="max-w-md mx-auto py-8 flex flex-col gap-8 anim-in" style="animation-delay:0.05s">
 
