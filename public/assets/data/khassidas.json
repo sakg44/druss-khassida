@@ -1,0 +1,16 @@
+{
+  "r2BaseUrl": "https://pub-308c3cf97a1f4e37b3352d14d3eb7b76.r2.dev",
+  "khassidas": [
+    {
+      "id": "layantaxi",
+      "nom": "Lay Antaxi",
+      "nomAr": "لا ينتحي",
+      "auteur": "Cheikh Ahmadou Bamba Mbacké",
+      "metrique": "autre",
+      "nb_vers": 64,
+      "xaab_per_vers": 2,
+      "pdfUrl": "https://pub-308c3cf97a1f4e37b3352d14d3eb7b76.r2.dev/pdfs/layantahi.pdf",
+      "disponible": true
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#166534"/>
+      <stop offset="100%" stop-color="#052e16"/>
+    </linearGradient>
+    <linearGradient id="star-fill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.06)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+
+  <!-- Subtle grid lines (background pattern echo) -->
+  <line x1="256" y1="60" x2="256" y2="130" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <line x1="256" y1="382" x2="256" y2="452" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <line x1="60" y1="256" x2="130" y2="256" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <line x1="382" y1="256" x2="452" y2="256" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+
+  <!-- 8-pointed star (filled) -->
+  <!-- Points: outer R=162, inner r=68, 8 outer + 8 inner interleaved -->
+  <path d="
+    M 256,94
+    L 282,188
+    L 370,142
+    L 324,228
+    L 418,256
+    L 324,284
+    L 370,370
+    L 282,324
+    L 256,418
+    L 230,324
+    L 142,370
+    L 188,284
+    L 94,256
+    L 188,228
+    L 142,142
+    L 230,188
+    Z"
+    fill="url(#star-fill)"
+    stroke="rgba(255,255,255,0.75)"
+    stroke-width="7"
+    stroke-linejoin="round"
+  />
+
+  <!-- Inner diamond (rotated square) -->
+  <rect x="191" y="191" width="130" height="130"
+        fill="none"
+        stroke="rgba(255,255,255,0.25)"
+        stroke-width="4"
+        transform="rotate(45 256 256)"/>
+
+  <!-- Center circle — white ring -->
+  <circle cx="256" cy="256" r="48" fill="rgba(255,255,255,0.92)"/>
+  <circle cx="256" cy="256" r="34" fill="#166534"/>
+  <!-- Center dot -->
+  <circle cx="256" cy="256" r="10" fill="rgba(255,255,255,0.9)"/>
+
+  <!-- 8 outer point dots -->
+  <circle cx="256" cy="94"  r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="370" cy="142" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="418" cy="256" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="370" cy="370" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="256" cy="418" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="142" cy="370" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="94"  cy="256" r="7" fill="rgba(255,255,255,0.55)"/>
+  <circle cx="142" cy="142" r="7" fill="rgba(255,255,255,0.55)"/>
+</svg>

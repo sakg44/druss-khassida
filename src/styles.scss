@@ -1,0 +1,228 @@
+@use "tailwindcss";
+
+/* ── Theme tokens ───────────────────────────────────────── */
+:root {
+  --c-bg:          #f7faf8;
+  --c-surface:     #ffffff;
+  --c-border:      #bbf7d0;
+  --c-border-2:    #4ade80;
+  --c-text-1:      #052e16;
+  --c-text-2:      #14532d;
+  --c-text-3:      #166534;
+  --c-accent:      #15803d;
+  --c-accent-2:    #14532d;
+  --c-accent-bg:   #dcfce7;
+  --c-muted:       #f0fdf4;
+  --c-pattern:     url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2316a34a' stroke-width='0.5' opacity='0.07'%3E%3Cpath d='M40 6 L74 40 L40 74 L6 40 Z'/%3E%3Cpath d='M40 0 L40 14 M80 40 L66 40 M40 80 L40 66 M0 40 L14 40'/%3E%3Ccircle cx='40' cy='0' r='2' fill='%2316a34a'/%3E%3Ccircle cx='80' cy='40' r='2' fill='%2316a34a'/%3E%3Ccircle cx='40' cy='80' r='2' fill='%2316a34a'/%3E%3Ccircle cx='0' cy='40' r='2' fill='%2316a34a'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dark {
+  --c-bg:          #071009;
+  --c-surface:     #0d1f10;
+  --c-border:      #1a3522;
+  --c-border-2:    #2d5a3a;
+  --c-text-1:      #e2f5e8;
+  --c-text-2:      #a7f0bb;
+  --c-text-3:      #4ade80;
+  --c-accent:      #22c55e;
+  --c-accent-2:    #16a34a;
+  --c-accent-bg:   rgba(34,197,94,0.15);
+  --c-muted:       rgba(34,197,94,0.06);
+  --c-pattern:     url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2322c55e' stroke-width='0.5' opacity='0.08'%3E%3Cpath d='M40 6 L74 40 L40 74 L6 40 Z'/%3E%3Cpath d='M40 0 L40 14 M80 40 L66 40 M40 80 L40 66 M0 40 L14 40'/%3E%3Ccircle cx='40' cy='0' r='2' fill='%2322c55e'/%3E%3Ccircle cx='80' cy='40' r='2' fill='%2322c55e'/%3E%3Ccircle cx='40' cy='80' r='2' fill='%2322c55e'/%3E%3Ccircle cx='0' cy='40' r='2' fill='%2322c55e'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background-color: var(--c-bg);
+  background-image: var(--c-pattern);
+  background-size: 80px 80px;
+  color: var(--c-text-1);
+  min-height: 100svh;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ── Typography ─────────────────────────────────────────── */
+.font-display { font-family: 'Cinzel', serif; }
+.font-serif   { font-family: 'Cormorant Garamond', serif; }
+.font-arabic  { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+/* ── Color utilities ────────────────────────────────────── */
+.c-text-1   { color: var(--c-text-1); }
+.c-text-2   { color: var(--c-text-2); }
+.c-text-3   { color: var(--c-text-3); }
+.c-accent   { color: var(--c-accent); }
+.c-bg       { background: var(--c-bg); }
+.c-surface  { background: var(--c-surface); }
+.c-muted    { background: var(--c-muted); }
+
+/* ── Animations ─────────────────────────────────────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes greenPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.5); }
+  60%     { box-shadow: 0 0 0 14px rgba(22,163,74,0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.anim-in {
+  opacity: 0;
+  animation: fadeSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ── Decorative rule ────────────────────────────────────── */
+.green-rule {
+  display: flex; align-items: center; gap: 0.5rem;
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-border-2), transparent);
+    opacity: 0.5;
+  }
+}
+
+/* ── Book card ──────────────────────────────────────────── */
+.book-card {
+  position: relative;
+  display: flex; flex-direction: column;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  overflow: hidden; cursor: pointer;
+  box-shadow: 0 1px 6px rgba(22,163,74,0.06);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s, background 0.3s;
+
+  &::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(22,163,74,0.03) 0%, transparent 40%, rgba(22,163,74,0.04) 100%);
+    pointer-events: none;
+  }
+  &:hover {
+    border-color: var(--c-accent);
+    box-shadow: 0 8px 32px rgba(22,163,74,0.15), 0 0 0 1px rgba(22,163,74,0.1);
+    transform: translateY(-3px);
+  }
+  &.unavailable { opacity: 0.4; cursor: not-allowed; &:hover { transform: none; box-shadow: none; border-color: var(--c-border); } }
+}
+
+/* ── Play button ────────────────────────────────────────── */
+.btn-play {
+  background: var(--c-accent);
+  color: #fff;
+  border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+  &:hover  { background: var(--c-accent-2); }
+  &:active { transform: scale(0.93); }
+  &.playing { animation: greenPulse 2.2s ease-in-out infinite; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; animation: none; }
+}
+
+/* ── Nav buttons ────────────────────────────────────────── */
+.btn-nav {
+  background: var(--c-muted);
+  border: 1px solid var(--c-border);
+  color: var(--c-text-3);
+  border-radius: 9999px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  &:not(:disabled):hover { background: var(--c-accent-bg); border-color: var(--c-accent); color: var(--c-accent); }
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+/* ── Speed chip ─────────────────────────────────────────── */
+.speed-chip {
+  padding: 0.2rem 0.55rem; border-radius: 4px;
+  font-size: 0.72rem; font-family: 'Cormorant Garamond', serif;
+  border: 1px solid var(--c-border);
+  background: transparent; color: var(--c-text-3); cursor: pointer;
+  transition: all 0.15s;
+  &.active  { background: var(--c-accent-bg); border-color: var(--c-accent); color: var(--c-text-2); }
+  &:not(.active):hover { border-color: var(--c-accent); color: var(--c-accent); }
+}
+
+/* ── Setup form ─────────────────────────────────────────── */
+.setup-section { border-bottom: 1px solid var(--c-border); padding-bottom: 1.5rem; }
+
+.mode-btn {
+  border: 1px solid var(--c-border); background: transparent; border-radius: 4px;
+  padding: 0.75rem 1rem; text-align: left; cursor: pointer; transition: all 0.2s;
+  color: var(--c-text-3);
+  &:hover { border-color: var(--c-accent); color: var(--c-text-1); background: var(--c-muted); }
+  &.active { border-color: var(--c-accent); background: var(--c-accent-bg); color: var(--c-text-1); }
+}
+
+.counter-btn {
+  width: 2rem; height: 2rem;
+  border: 1px solid var(--c-border); background: transparent; color: var(--c-text-3);
+  border-radius: 2px; cursor: pointer; font-size: 1rem; transition: all 0.15s;
+  display: flex; align-items: center; justify-content: center;
+  &:not(:disabled):hover { border-color: var(--c-accent); color: var(--c-accent); background: var(--c-muted); }
+  &:disabled { opacity: 0.3; cursor: not-allowed; }
+}
+
+.rep-btn {
+  flex: 1; min-width: 2.5rem; padding: 0.4rem 0;
+  border: 1px solid var(--c-border); background: transparent; color: var(--c-text-3);
+  border-radius: 3px; cursor: pointer;
+  font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; transition: all 0.15s;
+  &:hover { border-color: var(--c-accent); color: var(--c-accent); }
+  &.active { border-color: var(--c-accent); background: var(--c-accent-bg); color: var(--c-text-2); }
+}
+
+/* ── Player bar ─────────────────────────────────────────── */
+.player-bar {
+  background: color-mix(in srgb, var(--c-bg) 97%, transparent);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--c-border);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* ── Progress ───────────────────────────────────────────── */
+.progress-track {
+  height: 2px; background: var(--c-border); border-radius: 1px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c-accent-2), var(--c-accent), var(--c-border-2));
+  border-radius: 1px; transition: width 0.35s ease;
+}
+.rep-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c-border); transition: all 0.25s;
+  &.done { background: var(--c-accent); transform: scale(1.15); }
+}
+
+/* ── Theme toggle ───────────────────────────────────────── */
+.theme-btn {
+  width: 2rem; height: 2rem;
+  border: 1px solid var(--c-border); border-radius: 3px; background: transparent;
+  color: var(--c-text-3); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  &:hover { border-color: var(--c-accent); color: var(--c-accent); background: var(--c-muted); }
+}
+
+/* ── Header / nav ───────────────────────────────────────── */
+.app-header {
+  background: color-mix(in srgb, var(--c-bg) 96%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--c-border);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* ── Spinner ────────────────────────────────────────────── */
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--c-border);
+  border-top-color: var(--c-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
