@@ -1,8 +1,15 @@
 {
+  "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
   "outputDirectory": "dist/druss-khassida/browser",
   "framework": null,
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "functions": {},
+  "build": {
+    "env": {
+      "NODE_VERSION": "20"
+    }
+  }
 }
