@@ -130,65 +130,59 @@ export class SessionService implements OnDestroy {
     const url = this.buildUrl(state.config.khassidaId, state.currentVers, state.currentXaab);
     this.audio.play(url);
     this._state$.next({ ...state, isPlaying: true, isPaused: false });
+
+    // Précharge le prochain segment pour un enchaînement sans coupure
+    const next = this.computeNext(state, false);
+    if (next) {
+      this.audio.preload(this.buildUrl(state.config.khassidaId, next.vers, next.xaab));
+    }
   }
 
   private onAudioEnded(): void {
     this.advance(false);
   }
 
+  /**
+   * Calcule la prochaine position (pure, ne modifie pas l'état).
+   * Retourne null si la séance est terminée.
+   */
+  private computeNext(
+    state: DrussSession,
+    skip: boolean,
+  ): { vers: number; xaab: number; repetition: number; loopPass: number } | null {
+    if (!this.detail) return null;
+    const { config, currentVers, currentXaab, currentRepetition, currentLoopPass } = state;
+    const xaabMax = this.detail.xaab_per_vers;
+
+    if (config.playbackMode === 'boucle') {
+      if (currentXaab < xaabMax) return { vers: currentVers, xaab: currentXaab + 1, repetition: 1, loopPass: currentLoopPass };
+      if (currentVers < config.endVers) return { vers: currentVers + 1, xaab: 1, repetition: 1, loopPass: currentLoopPass };
+      if (!skip && currentLoopPass < config.repetitions) return { vers: config.startVers, xaab: 1, repetition: 1, loopPass: currentLoopPass + 1 };
+      return null;
+    }
+
+    if (config.playbackMode === 'vers') {
+      if (currentXaab < xaabMax) return { vers: currentVers, xaab: currentXaab + 1, repetition: currentRepetition, loopPass: currentLoopPass };
+      if (!skip && currentRepetition < config.repetitions) return { vers: currentVers, xaab: 1, repetition: currentRepetition + 1, loopPass: currentLoopPass };
+    }
+
+    if (config.playbackMode === 'xaab') {
+      if (!skip && currentRepetition < config.repetitions) return { vers: currentVers, xaab: currentXaab, repetition: currentRepetition + 1, loopPass: currentLoopPass };
+      if (currentXaab < xaabMax) return { vers: currentVers, xaab: currentXaab + 1, repetition: 1, loopPass: currentLoopPass };
+    }
+
+    // Vers suivant (commun à 'vers' et 'xaab')
+    if (currentVers < config.endVers) return { vers: currentVers + 1, xaab: 1, repetition: 1, loopPass: currentLoopPass };
+    return null;
+  }
+
   private advance(skip: boolean): void {
     const state = this.getState();
     if (!this.detail) return;
 
-    const { config, currentVers, currentXaab, currentRepetition, currentLoopPass } = state;
-
-    // --- Mode boucle : toute la plage joue en séquence, puis recommence ---
-    if (config.playbackMode === 'boucle') {
-      if (currentXaab < this.detail.xaab_per_vers) {
-        this.goToSegment(currentVers, currentXaab + 1, 1, currentLoopPass);
-        return;
-      }
-      if (currentVers < config.endVers) {
-        this.goToSegment(currentVers + 1, 1, 1, currentLoopPass);
-        return;
-      }
-      // Fin du passage
-      if (!skip && currentLoopPass < config.repetitions) {
-        this.goToSegment(config.startVers, 1, 1, currentLoopPass + 1);
-      } else {
-        this.audio.stop();
-        this._state$.next({ ...state, isPlaying: false, isPaused: false, isComplete: true });
-      }
-      return;
-    }
-
-    // --- Mode vers (bayt entier répété N fois) ---
-    if (config.playbackMode === 'vers') {
-      if (currentXaab < this.detail.xaab_per_vers) {
-        this.goToSegment(currentVers, currentXaab + 1, currentRepetition, currentLoopPass);
-        return;
-      }
-      if (!skip && currentRepetition < config.repetitions) {
-        this.goToSegment(currentVers, 1, currentRepetition + 1, currentLoopPass);
-        return;
-      }
-    }
-
-    // --- Mode xaab (chaque ligne répétée N fois) ---
-    if (config.playbackMode === 'xaab') {
-      if (!skip && currentRepetition < config.repetitions) {
-        this.goToSegment(currentVers, currentXaab, currentRepetition + 1, currentLoopPass);
-        return;
-      }
-      if (currentXaab < this.detail.xaab_per_vers) {
-        this.goToSegment(currentVers, currentXaab + 1, 1, currentLoopPass);
-        return;
-      }
-    }
-
-    // Vers suivant (commun à 'vers' et 'xaab')
-    if (currentVers < config.endVers) {
-      this.goToSegment(currentVers + 1, 1, 1, currentLoopPass);
+    const next = this.computeNext(state, skip);
+    if (next) {
+      this.goToSegment(next.vers, next.xaab, next.repetition, next.loopPass);
     } else {
       this.audio.stop();
       this._state$.next({ ...state, isPlaying: false, isPaused: false, isComplete: true });
