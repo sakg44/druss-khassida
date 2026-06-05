@@ -33,6 +33,19 @@ export interface VersRepeat {
   originalVers: number;
 }
 
+export interface VersAnnotation {
+  vers: number;
+  page: number;
+  yStart: number;  // 0–1 normalisé sur la hauteur de la page
+  yEnd:   number;
+}
+
+export interface HighlightZone {
+  page:   number;
+  yStart: number;
+  yEnd:   number;
+}
+
 export interface KhassidaDetail {
   id: string;
   nb_vers: number;
@@ -42,5 +55,6 @@ export interface KhassidaDetail {
   has_cloture: boolean;
   pdfMapping: PdfMapping;
   repeats: VersRepeat[];
+  annotations?: VersAnnotation[];
   segments: Segment[];
 }

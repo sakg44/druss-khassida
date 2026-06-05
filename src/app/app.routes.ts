@@ -9,5 +9,9 @@ export const routes: Routes = [
     path: 'druss/:id',
     loadComponent: () => import('./features/druss-room/druss-room.component').then(m => m.DrussRoomComponent),
   },
+  {
+    path: 'annotate/:id',
+    loadComponent: () => import('./features/annotate/annotate.component').then(m => m.AnnotateComponent),
+  },
   { path: '**', redirectTo: '' },
 ];

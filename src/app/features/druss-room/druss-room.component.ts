@@ -81,7 +81,12 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
         <!-- MOBILE -->
         <div class="flex-1 min-h-0 flex flex-col lg:hidden overflow-hidden">
           <div class="flex-1 min-h-0 p-2">
-            <app-pdf-viewer [pdfUrl]="info()!.pdfUrl" class="h-full block" />
+            <app-pdf-viewer
+              [pdfUrl]="info()!.pdfUrl"
+              [targetPage]="currentPdfPage()"
+              [highlightZone]="currentZone()"
+              [annotated]="hasAnnotations()"
+              class="h-full block" />
           </div>
 
           <div class="shrink-0 player-bar px-4 pt-3 pb-4 flex flex-col gap-2.5">
@@ -165,7 +170,12 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
         <!-- DESKTOP -->
         <div class="flex-1 min-h-0 hidden lg:flex flex-row overflow-hidden">
           <div class="flex-1 min-h-0 min-w-0 p-4" style="border-right:1px solid var(--c-border)">
-            <app-pdf-viewer [pdfUrl]="info()!.pdfUrl" class="h-full block" />
+            <app-pdf-viewer
+              [pdfUrl]="info()!.pdfUrl"
+              [targetPage]="currentPdfPage()"
+              [highlightZone]="currentZone()"
+              [annotated]="hasAnnotations()"
+              class="h-full block" />
           </div>
           <div class="w-72 shrink-0 flex flex-col justify-center gap-8 p-6 overflow-y-auto">
             <app-progress-track [session]="session()!" [totalVers]="detail()!.nb_vers" />
@@ -252,6 +262,29 @@ export class DrussRoomComponent implements OnInit, OnDestroy {
     const total = s.config.repetitions;
     const current = s.config.playbackMode === 'boucle' ? s.currentLoopPass : s.currentRepetition;
     return Array.from({ length: total }, (_, i) => i < current);
+  });
+
+  // Page PDF cible selon le vers en cours
+  currentPdfPage = computed(() => {
+    const s = this.session(), d = this.detail();
+    if (!s || !d) return null;
+    return this.khassidaService.getPdfPage(d, s.currentVers);
+  });
+
+  // Zone de surbrillance du vers en cours (null si non annoté)
+  // En mode xaab, la zone est découpée à la ligne en cours.
+  currentZone = computed(() => {
+    const s = this.session(), d = this.detail();
+    if (!s || !d) return null;
+    return this.khassidaService.getHighlightZone(d, s.currentVers, {
+      mode: s.config.playbackMode,
+      xaab: s.currentXaab,
+    });
+  });
+
+  hasAnnotations = computed(() => {
+    const d = this.detail();
+    return d ? this.khassidaService.hasAnnotations(d) : false;
   });
 
   ngOnInit(): void {
