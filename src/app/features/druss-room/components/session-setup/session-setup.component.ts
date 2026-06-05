@@ -73,12 +73,12 @@ import { SessionConfig, REPETITION_OPTIONS, PLAYBACK_RATE_OPTIONS, PlaybackMode 
     .rep-circle {
       flex: 1; aspect-ratio: 1; max-width: 56px;
       border-radius: 50%;
-      border: 1.5px solid var(--c-border);
-      background: transparent;
+      border: 1.5px solid var(--c-border-2);
+      background: var(--c-surface);
       cursor: pointer;
-      font-family: 'Cinzel', serif;
+      font-family: 'Outfit', sans-serif; font-weight: 600;
       font-size: 0.85rem;
-      color: var(--c-text-3);
+      color: var(--c-text-2);
       display: flex; align-items: center; justify-content: center;
       transition: all .15s;
     }
@@ -97,7 +97,7 @@ import { SessionConfig, REPETITION_OPTIONS, PLAYBACK_RATE_OPTIONS, PlaybackMode 
       border: none;
       background: transparent;
       cursor: pointer;
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Outfit', sans-serif; font-weight: 600;
       font-size: 0.8rem;
       color: var(--c-text-3);
       transition: all .15s;
@@ -324,28 +324,14 @@ import { SessionConfig, REPETITION_OPTIONS, PLAYBACK_RATE_OPTIONS, PlaybackMode 
     <!-- ── Sticky footer / CTA ── -->
     <div class="setup-footer">
       <!-- Session summary -->
-      <div class="flex items-center gap-2 mb-3">
-        <div class="flex-1 flex items-center gap-1.5 flex-wrap">
-          <span class="font-display text-[9px] tracking-wider uppercase px-2 py-0.5 rounded-sm c-accent"
-                style="background:var(--c-accent-bg); border:1px solid var(--c-accent); opacity:.9">
-            {{ modeLabel() }}
-          </span>
-          <span class="font-serif c-text-3" style="font-size:.78rem">
-            vers {{ startVers() }}–{{ endVers() }}
-          </span>
-          <span class="c-text-3" style="font-size:.6rem; opacity:.4">·</span>
-          <span class="font-serif c-text-3" style="font-size:.78rem">
-            {{ repetitions() }}× · {{ playbackRate() }}×
-          </span>
-        </div>
+      <div class="flex items-center gap-1.5 flex-wrap mb-3">
+        <span class="chip">{{ modeLabel() }}</span>
+        <span class="chip-muted chip">vers {{ startVers() }}–{{ endVers() }}</span>
+        <span class="chip-muted chip">{{ repetitions() }}× · {{ playbackRate() }}× vitesse</span>
       </div>
 
-      <button (click)="onStart()"
-        class="w-full flex items-center justify-center gap-3 font-display text-sm tracking-[.18em] uppercase transition-all active:scale-[.98]"
-        style="background:linear-gradient(135deg, var(--c-accent-2), var(--c-accent)); color:#fff; border-radius:4px; padding:.9rem 1rem; box-shadow: 0 4px 20px color-mix(in srgb, var(--c-accent) 30%, transparent)">
-        <svg width="15" height="15" viewBox="0 0 18 18" fill="currentColor" style="margin-left:2px; opacity:.9">
-          <path d="M4 2.5l12 6.5-12 6.5V2.5z"/>
-        </svg>
+      <button (click)="onStart()" class="btn-primary w-full" style="padding:1rem; font-size:.95rem">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="currentColor" style="margin-left:1px"><path d="M4 2.5l12 6.5-12 6.5V2.5z"/></svg>
         Entrer en druss
       </button>
     </div>

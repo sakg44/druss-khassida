@@ -194,32 +194,30 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
       <!-- ── Complete ── -->
       @if (!loading() && view() === 'complete' && session()) {
         <div class="flex-1 flex items-center justify-center p-6">
-          <div class="max-w-xs w-full text-center flex flex-col items-center gap-6 anim-in">
-            <div class="green-rule w-full max-w-[200px]">
-              <span class="c-accent" style="font-size:0.6rem">◆</span>
+          <div class="max-w-sm w-full setup-section text-center flex flex-col items-center gap-5 anim-in" style="padding:2rem 1.5rem">
+            <!-- check medallion -->
+            <div class="flex items-center justify-center" style="width:64px; height:64px; border-radius:50%; background:var(--c-accent-bg)">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--c-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12l5 5L20 6"/>
+              </svg>
             </div>
+
             <div>
-              <p class="font-display text-xs tracking-[0.25em] uppercase mb-3 c-accent">Séance accomplie</p>
-              <p class="font-arabic text-3xl mb-2 c-text-1" dir="rtl">{{ info()?.nomAr }}</p>
-              <p class="font-serif text-sm c-text-3" style="font-size:0.9rem">
-                Vers {{ session()!.config.startVers }} – {{ session()!.config.endVers }} ·
-                {{ session()!.config.repetitions }}
-                {{ session()!.config.playbackMode === 'boucle' ? 'passage' : 'répétition' }}{{ session()!.config.repetitions > 1 ? 's' : '' }}
-              </p>
+              <span class="chip mb-3">Séance accomplie</span>
+              <p class="font-arabic c-text-1 mt-1" dir="rtl" style="font-size:2rem; font-weight:700">{{ info()?.nomAr }}</p>
             </div>
-            <div class="green-rule w-full max-w-[200px]">
-              <span class="c-accent" style="font-size:0.6rem">◆</span>
+
+            <div class="flex items-center gap-2 flex-wrap justify-center">
+              <span class="chip-muted chip">vers {{ session()!.config.startVers }}–{{ session()!.config.endVers }}</span>
+              <span class="chip-muted chip">{{ session()!.config.repetitions }}× {{ session()!.config.playbackMode === 'boucle' ? 'passages' : 'répét.' }}</span>
             </div>
-            <div class="flex flex-col gap-3 w-full">
-              <button (click)="restartSession()"
-                      class="w-full py-3 font-display text-xs tracking-[0.18em] uppercase transition-all hover:opacity-90 active:scale-95"
-                      style="background:linear-gradient(135deg, var(--c-accent-2), var(--c-accent)); color:#fff; border-radius:3px">
+
+            <div class="flex flex-col gap-3 w-full mt-1">
+              <button (click)="restartSession()" class="btn-primary w-full">
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="currentColor" style="margin-left:1px"><path d="M4 2.5l12 6.5-12 6.5V2.5z"/></svg>
                 Rejouer
               </button>
-              <button (click)="exitSession()"
-                      class="w-full py-3 font-display text-xs tracking-[0.18em] uppercase transition-all rep-btn">
-                Nouvelle séance
-              </button>
+              <button (click)="exitSession()" class="btn-ghost w-full">Nouvelle séance</button>
             </div>
           </div>
         </div>
