@@ -1,0 +1,36 @@
+{
+  "id": "wakhani",
+  "nb_vers": 17,
+  "audio_vers": 20,
+  "xaab_per_vers": 2,
+  "has_tardjuman": false,
+  "has_cloture": false,
+  "pdfMapping": {
+    "startPage": 1,
+    "versPerPage": 5
+  },
+  "repeats": [
+    { "audioVers": 2, "originalVers": 1 },
+    { "audioVers": 19, "originalVers": 17 },
+    { "audioVers": 20, "originalVers": 17 }
+  ],
+  "annotations": [
+    { "vers": 1, "page": 2, "yStart": 0.5727, "yEnd": 0.7786 },
+    { "vers": 2, "page": 2, "yStart": 0.7643, "yEnd": 0.9813 },
+    { "vers": 3, "page": 3, "yStart": 0.0279, "yEnd": 0.2187 },
+    { "vers": 4, "page": 3, "yStart": 0.2076, "yEnd": 0.3985 },
+    { "vers": 5, "page": 3, "yStart": 0.3771, "yEnd": 0.579 },
+    { "vers": 6, "page": 3, "yStart": 0.56, "yEnd": 0.7596 },
+    { "vers": 7, "page": 3, "yStart": 0.7398, "yEnd": 0.9361 },
+    { "vers": 8, "page": 4, "yStart": 0.0184, "yEnd": 0.225 },
+    { "vers": 9, "page": 4, "yStart": 0.2163, "yEnd": 0.4072 },
+    { "vers": 10, "page": 4, "yStart": 0.3977, "yEnd": 0.5956 },
+    { "vers": 11, "page": 4, "yStart": 0.583, "yEnd": 0.7738 },
+    { "vers": 12, "page": 4, "yStart": 0.7572, "yEnd": 0.9654 },
+    { "vers": 13, "page": 5, "yStart": 0.0184, "yEnd": 0.2203 },
+    { "vers": 14, "page": 5, "yStart": 0.2148, "yEnd": 0.3977 },
+    { "vers": 15, "page": 5, "yStart": 0.3842, "yEnd": 0.5822 },
+    { "vers": 16, "page": 5, "yStart": 0.5703, "yEnd": 0.7627 },
+    { "vers": 17, "page": 5, "yStart": 0.7516, "yEnd": 0.9536 }
+  ]
+}

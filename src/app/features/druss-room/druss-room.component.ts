@@ -16,16 +16,18 @@ import { SessionSetupComponent } from './components/session-setup/session-setup.
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
 import { AudioControlsComponent } from './components/audio-controls/audio-controls.component';
 import { ProgressTrackComponent } from './components/progress-track/progress-track.component';
+import { DaadjSelectorComponent } from './components/daadj-selector/daadj-selector.component';
 
 @Component({
   selector: 'app-druss-room',
   standalone: true,
-  imports: [RouterModule, SessionSetupComponent, PdfViewerComponent, AudioControlsComponent, ProgressTrackComponent],
+  imports: [RouterModule, SessionSetupComponent, PdfViewerComponent, AudioControlsComponent, ProgressTrackComponent, DaadjSelectorComponent],
   template: `
     <div class="h-screen flex flex-col overflow-hidden c-bg">
 
       <!-- ── Header ── -->
-      <header class="app-header shrink-0 flex items-center gap-2 px-4 py-2.5 z-10">
+      <header class="app-header shrink-0 flex items-center gap-2 px-4 py-2.5 z-10"
+              style="padding-top: max(0.625rem, env(safe-area-inset-top)); padding-right: max(1rem, env(safe-area-inset-right))">
         <a routerLink="/" class="btn-nav w-8 h-8">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
             <path d="M9 1L3 6l6 5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
@@ -38,7 +40,9 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
           } @else {
             <p class="font-display text-xs tracking-widest uppercase truncate c-text-3">{{ info()?.nom }}</p>
           }
-          <p class="font-display text-[9px] tracking-[0.18em] uppercase c-text-2">Salon de druss</p>
+          <p class="font-display text-[9px] tracking-[0.18em] uppercase c-text-2">
+            Salon de druss@if (currentDaadj()?.kurel) { · {{ currentDaadj()!.kurel }} }
+          </p>
         </div>
 
         <button class="theme-btn" (click)="themeService.toggle()" [title]="themeService.isDark() ? 'Mode clair' : 'Mode sombre'">
@@ -90,6 +94,22 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
           </div>
 
           <div class="shrink-0 player-bar px-4 pt-3 pb-4 flex flex-col gap-2.5">
+            <!-- Daadj (style de sonorisation) -->
+            @if (info()!.daajs.length > 1) {
+              <app-daadj-selector class="self-center"
+                [daajs]="info()!.daajs"
+                [selected]="session()!.config.daadjId"
+                (select)="sessionService.setDaadj($event)" />
+            } @else if (currentDaadj(); as d) {
+              <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                <span class="chip chip-gold" style="padding:.18rem .5rem; font-size:.6rem">{{ d.nom }}</span>
+                @if (info()!.metrique) {
+                  <span class="chip" style="padding:.18rem .5rem; font-size:.6rem">{{ info()!.metrique }}</span>
+                }
+                <span class="font-serif c-text-3" style="font-size:.72rem">· {{ d.kurel }}</span>
+              </div>
+            }
+
             <!-- Progress bar -->
             <div class="flex items-center gap-2">
               <span class="font-display text-[9px] tracking-wider w-5 text-right shrink-0 c-text-3">{{ session()!.config.startVers }}</span>
@@ -178,9 +198,18 @@ import { ProgressTrackComponent } from './components/progress-track/progress-tra
               class="h-full block" />
           </div>
           <div class="w-72 shrink-0 flex flex-col justify-center gap-8 p-6 overflow-y-auto">
+            @if (info()!.daajs.length > 1) {
+              <div class="flex flex-col gap-2">
+                <p class="font-display text-[9px] tracking-[.25em] uppercase c-text-3">Daadj</p>
+                <app-daadj-selector
+                  [daajs]="info()!.daajs"
+                  [selected]="session()!.config.daadjId"
+                  (select)="sessionService.setDaadj($event)" />
+              </div>
+            }
             <app-progress-track [session]="session()!" [totalVers]="detail()!.nb_vers" />
             <app-audio-controls
-              [session]="session()!" [isMuted]="isMuted()"
+              [session]="session()!" [isMuted]="isMuted()" [daadj]="currentDaadj()" [metrique]="info()!.metrique"
               (playPause)="sessionService.togglePlayPause()"
               (previous)="sessionService.previous()"
               (next)="sessionService.next()"
@@ -285,6 +314,14 @@ export class DrussRoomComponent implements OnInit, OnDestroy {
     return d ? this.khassidaService.hasAnnotations(d) : false;
   });
 
+  // Daadj en cours (selon la config de séance, sinon le premier disponible)
+  currentDaadj = computed(() => {
+    const i = this.info();
+    if (!i) return null;
+    const id = this.session()?.config.daadjId;
+    return i.daajs.find(d => d.id === id) ?? i.daajs[0] ?? null;
+  });
+
   ngOnInit(): void {
     this.route.params.pipe(
       takeUntil(this.destroy$),
@@ -315,7 +352,7 @@ export class DrussRoomComponent implements OnInit, OnDestroy {
     const detail = this.detail(), info = this.info();
     if (!detail || !info) return;
     this.view.set('active');
-    this.sessionService.start(config, detail, info.metrique);
+    this.sessionService.start(config, detail);
   }
 
   exitSession(): void {
@@ -327,9 +364,9 @@ export class DrussRoomComponent implements OnInit, OnDestroy {
   }
 
   restartSession(): void {
-    const s = this.session(), d = this.detail(), i = this.info();
-    if (!s || !d || !i) return;
-    this.sessionService.start(s.config, d, i.metrique);
+    const s = this.session(), d = this.detail();
+    if (!s || !d) return;
+    this.sessionService.start(s.config, d);
     this.view.set('active');
   }
 

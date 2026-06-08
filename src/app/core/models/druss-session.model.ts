@@ -3,6 +3,7 @@ export type SessionView = 'setup' | 'active' | 'complete';
 
 export interface SessionConfig {
   khassidaId: string;
+  daadjId: string;
   startVers: number;
   endVers: number;
   repetitions: number;

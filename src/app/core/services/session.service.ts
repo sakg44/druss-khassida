@@ -9,6 +9,7 @@ import { KhassidaDetail } from '../models/khassida.model';
 const DEFAULT_SESSION: DrussSession = {
   config: {
     khassidaId: '',
+    daadjId: '',
     startVers: 1,
     endVers: 1,
     repetitions: 3,
@@ -35,7 +36,6 @@ export class SessionService implements OnDestroy {
   private destroy$ = new Subject<void>();
   private detail: KhassidaDetail | null = null;
   private r2BaseUrl = '';
-  private metrique = '';
 
   private _state$ = new BehaviorSubject<DrussSession>({ ...DEFAULT_SESSION });
   readonly state$ = this._state$.asObservable();
@@ -50,9 +50,8 @@ export class SessionService implements OnDestroy {
     return this._state$.getValue();
   }
 
-  start(config: SessionConfig, detail: KhassidaDetail, metrique: string): void {
+  start(config: SessionConfig, detail: KhassidaDetail): void {
     this.detail = detail;
-    this.metrique = metrique;
     this.audio.setPlaybackRate(config.playbackRate);
 
     this._state$.next({
@@ -118,6 +117,28 @@ export class SessionService implements OnDestroy {
     this._state$.next({ ...state, config: { ...state.config, playbackRate: rate } });
   }
 
+  /**
+   * Change le daadj (style de sonorisation) à la volée. Le segment courant
+   * est rejoué depuis le début dans le nouveau style ; l'état lecture/pause
+   * est préservé.
+   */
+  setDaadj(daadjId: string): void {
+    const state = this.getState();
+    if (!state.config.khassidaId || state.config.daadjId === daadjId) return;
+
+    const wasPaused = state.isPaused;
+    this._state$.next({ ...state, config: { ...state.config, daadjId } });
+
+    if (!this.detail) return;
+    this.audio.stop();
+    this.playCurrentSegment();
+    if (wasPaused) {
+      this.audio.pause();
+      const s = this.getState();
+      this._state$.next({ ...s, isPlaying: false, isPaused: true });
+    }
+  }
+
   stop(): void {
     this.audio.stop();
     this._state$.next({ ...DEFAULT_SESSION });
@@ -127,14 +148,14 @@ export class SessionService implements OnDestroy {
   private playCurrentSegment(): void {
     const state = this.getState();
     if (!this.detail) return;
-    const url = this.buildUrl(state.config.khassidaId, state.currentVers, state.currentXaab);
+    const url = this.buildUrl(state.currentVers, state.currentXaab);
     this.audio.play(url);
     this._state$.next({ ...state, isPlaying: true, isPaused: false });
 
     // Précharge le prochain segment pour un enchaînement sans coupure
     const next = this.computeNext(state, false);
     if (next) {
-      this.audio.preload(this.buildUrl(state.config.khassidaId, next.vers, next.xaab));
+      this.audio.preload(this.buildUrl(next.vers, next.xaab));
     }
   }
 
@@ -210,10 +231,11 @@ export class SessionService implements OnDestroy {
       : { isRepeat: false, repeatOf: null };
   }
 
-  private buildUrl(id: string, vers: number, xaab: number): string {
+  private buildUrl(vers: number, xaab: number): string {
+    const { khassidaId, daadjId } = this.getState().config;
     const v = String(vers).padStart(3, '0');
     const x = String(xaab).padStart(2, '0');
-    return `${this.r2BaseUrl}/${this.metrique}/${id}/${v}_x${x}.mp3`;
+    return `${this.r2BaseUrl}/${daadjId}/${khassidaId}/${v}_x${x}.mp3`;
   }
 
   ngOnDestroy(): void {

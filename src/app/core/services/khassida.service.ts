@@ -19,7 +19,7 @@ export class KhassidaService {
 
   getSegmentsForVers(id: string, vers: number): Observable<Segment[]> {
     return this.getDetail(id).pipe(
-      map(d => d.segments.filter(s => s.vers === vers).sort((a, b) => a.xaab - b.xaab))
+      map(d => (d.segments ?? []).filter(s => s.vers === vers).sort((a, b) => a.xaab - b.xaab))
     );
   }
 

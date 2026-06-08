@@ -6,11 +6,41 @@
       "nom": "Lay Antaxi",
       "nomAr": "لا ينتحي",
       "auteur": "Cheikh Ahmadou Bamba Mbacké",
-      "metrique": "autre",
+      "metrique": "al-Rajaz",
+      "metriqueAr": "الرَّجَز",
       "nb_vers": 63,
       "xaab_per_vers": 2,
       "pdfUrl": "https://pub-308c3cf97a1f4e37b3352d14d3eb7b76.r2.dev/pdfs/layantahi.pdf",
-      "disponible": true
+      "disponible": true,
+      "daajs": [
+        {
+          "id": "hizbu-tarqiya",
+          "nom": "Hizbu Tarqiya",
+          "nomAr": "حزب الترقية",
+          "kurel": "Kurel 2 HT Dakar"
+        }
+      ]
+    },
+    {
+      "id": "wakhani",
+      "nom": "Wakhani",
+      "nomAr": "وفانى",
+      "auteur": "Cheikh Ahmadou Bamba Mbacké",
+      "metrique": "al-Ṭawīl",
+      "metriqueAr": "الطويل",
+      "nb_vers": 17,
+      "xaab_per_vers": 2,
+      "pdfUrl": "https://pub-308c3cf97a1f4e37b3352d14d3eb7b76.r2.dev/pdfs/wakhani.pdf",
+      "disponible": true,
+      "daajs": [
+        {
+          "id": "WKSM",
+          "nom": "WKSM",
+          "kurel": "Kurel 1 HT Touba",
+          "evenement": "J18 Ramadan",
+          "annee": 2022
+        }
+      ]
     }
   ]
 }

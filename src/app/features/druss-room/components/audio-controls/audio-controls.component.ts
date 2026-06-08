@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { DrussSession, PLAYBACK_RATE_OPTIONS } from '../../../../core/models/druss-session.model';
+import { Daadj, daadjContexte } from '../../../../core/models/khassida.model';
 
 @Component({
   selector: 'app-audio-controls',
@@ -8,6 +9,24 @@ import { DrussSession, PLAYBACK_RATE_OPTIONS } from '../../../../core/models/dru
   imports: [],
   template: `
     <div class="flex flex-col gap-5">
+      @if (daadj || metrique) {
+        <div class="text-center flex flex-col items-center gap-1.5">
+          <div class="flex items-center justify-center gap-1.5 flex-wrap">
+            @if (daadj) {
+              <span class="chip chip-gold" style="padding:.2rem .55rem; font-size:.62rem">{{ daadj.nom }}</span>
+            }
+            @if (metrique) {
+              <span class="chip" style="padding:.2rem .55rem; font-size:.62rem">{{ metrique }}</span>
+            }
+          </div>
+          @if (daadj) {
+            <p class="font-serif c-text-3" style="font-size:.74rem">
+              {{ daadj.kurel }}{{ ctx(daadj) ? ' · ' + ctx(daadj) : '' }}
+            </p>
+          }
+        </div>
+      }
+
       <div class="flex items-center justify-center gap-5">
         <button class="btn-nav w-11 h-11" [disabled]="!canPrev" (click)="previous.emit()">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
@@ -62,6 +81,10 @@ import { DrussSession, PLAYBACK_RATE_OPTIONS } from '../../../../core/models/dru
 export class AudioControlsComponent {
   @Input() session!: DrussSession;
   @Input() isMuted = false;
+  @Input() daadj: Daadj | null = null;
+  @Input() metrique = '';
+
+  ctx = daadjContexte;
   @Output() playPause   = new EventEmitter<void>();
   @Output() previous    = new EventEmitter<void>();
   @Output() next        = new EventEmitter<void>();
